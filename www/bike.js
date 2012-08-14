@@ -7,7 +7,7 @@ var write_local_db = false;
 var dropadd_local_db = false; // clear local DB
 var reset_rideNum = false; // clear localStorage
 var reset_distLifetime = false; // clear localStorage
-var use_dummy_data = false; // true for off-phone browser dev
+var use_dummy_data = true; // true for off-phone browser dev
 
 
 /******************************* 
@@ -16,7 +16,7 @@ var use_dummy_data = false; // true for off-phone browser dev
 
 // setup  CartoDB
 var urlBase = "https://ideapublic.cartodb.com/api/v1/sql?api_key=";
-var cartoKey = "d1003f790f91855f9a72363ac887e14010974332"; 
+var cartoKey = ""; 
 
 // setup ride vars
 var gpsInterval = 5000; // milliseconds
