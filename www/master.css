@@ -1,0 +1,213 @@
+body {
+color:#666;
+font-family:Helvetica;
+font-size:72%;
+line-height:1.5em;
+margin:0;
+border-top:1px solid #393939;
+background:#222 none repeat scroll 0 0;
+background:#bbb url(images/background.jpg);
+text-align:center;
+
+}
+
+div { 
+    position:relative;
+    }
+
+p {
+    color:rgba(255,255,255,0.9);
+    font-size:1.2em;
+    text-align:left;
+    margin:.5em 7px;
+}
+  
+
+
+
+/******************************* 
+ * Containers
+ */
+
+#stats, #settings {
+  margin:10px;
+  padding:15px 5px;
+  border:1px solid white;
+  border-color:rgba(255,255,255,0.5);
+  background:rgba(0,0,0,0.2);
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
+ 
+}
+#settings { /* username form */
+    display:none;
+    }
+
+#opendata {
+    position:absolute;
+    bottom:0;
+    z-index:-1;
+    color:rgba(0,0,0,0.25);
+    font-weight:bold;
+    overflow:hidden;
+}
+
+
+/******************************* 
+ * Lists & Menu
+ */
+
+
+ul, li {
+    list-style-type:none;
+    padding:0px;
+    margin:0;
+}
+
+li {
+    font-size:2em;
+    line-height:1.1em;
+    list-style-type:none;
+    padding:0px;
+    color:rgba(255,255,255,0.9);
+    font-weight:bold;
+}
+
+
+
+#links a, #menu a {
+    display:inline;
+    color:rgba(0,0,0,0.7);
+    background:rgba(255,255,255,0.5);
+    border:1px solid rgba(0,0,0,0.25);
+    padding:4px 9px;
+    font-size:.5em;
+    text-decoration:none;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+}
+#links a:hover, #links a:active, 
+#menu a:hover, #menu a:active { 
+    background:rgba(255,255,255,0.9); 
+    }
+
+#menu { 
+    background:rgba(0,0,0,0.10);
+    border:1px solid rgba(0,0,0,0.25);
+    border-width:0 0 1px;
+    padding-bottom:.25em;
+    }
+
+
+/******************************* 
+ * Data & Stats
+ */
+
+#ride-number { ; }
+
+
+#time {
+    color:#aaa;
+    font-size:3em;
+}
+
+#distance {
+    font-size:3em;
+}
+
+#dist-Lifetime { ; }
+
+.secondary { 
+    color:#aaa; 
+    }
+
+
+#thedata { /* phone info for settings page */
+    margin:10px auto;
+    width:300px;
+    padding:10px 5px 20px;
+    border:1px solid white;
+    border-color:rgba(255,255,255,0.5);
+    background:rgba(0,0,0,0.4);
+    text-align:left;
+    color:white;
+    clear:both;
+    display:none;
+}
+
+
+
+
+/******************************* 
+ * Button
+ */
+
+
+div#button { 
+    position:absolute;
+    height:150px;
+    width:150px;
+    margin:0;
+    margin-left:-75px;
+    margin-top:-75px;
+    top:75%;
+    left:50%;
+    }
+
+a#start:active {
+    border:0;
+}
+
+
+
+/******************************* 
+ * Map
+ */
+
+#mapframe {
+    margin:0 5% 5%; 
+    height:440px; 
+    width:88%;
+    background:rgba(255,255,255,0.3);
+}
+
+#maplink { display:block; }
+
+/******************************* 
+ * Forms
+ */
+
+form { 
+    width:300px; 
+    margin:1em auto; 
+    padding-bottom:2em;
+    }
+input { 
+    display:block;
+    font-size:2em;
+    padding:2px 4px;
+    background:rgba(255,255,255,0.7);
+    border:2px solid #aaa;
+    -moz-border-radius: 8px;
+    -webkit-border-radius: 8px;
+    border-radius: 8px;
+     }
+     
+input:focus { 
+    background:rgba(255,255,255,0.9);
+    
+}
+
+input[type="submit"], input[type="button"] {
+    background:black;
+    color:white;
+    float:left;
+    font-size:1.5em;
+}
+
+
+     
+     
+     
