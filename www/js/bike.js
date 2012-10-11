@@ -16,7 +16,7 @@ var use_dummy_data = true; // true for off-phone browser dev
 
 // setup CartoDB
 var urlBase = "https://ideapublic.cartodb.com/api/v2/sql?";
-var cartoKey = "api_key=XXXXXXXXXX"; 
+var cartoKey = "api_key=XXXXXXXXX"; 
 
 // setup ride vars
 var gpsInterval = 5000; // milliseconds
@@ -29,8 +29,6 @@ var counter=0;
 var startTime, endTime;
 var timer;
 var timer_is_on=0;
-
-
 
 
 function initBike() {
@@ -337,20 +335,11 @@ function cartodbLine(rideID) {
         var sqlInsert = "&q=INSERT INTO rides(the_geom,username,ride_id) SELECT ST_Multi(ST_MakeLine(traces.the_geom)) as the_geom,'"+ username +"' as username,"+ rideID +" as ride_id FROM (SELECT the_geom, username FROM gps_traces WHERE username='"+ username +"' AND ride_id="+ rideID +") as traces";
         var theUrl = urlBase + cartoKey + sqlInsert;
 
-        var xmlHttp = null;
-        xmlHttp = new XMLHttpRequest();
-        xmlHttp.open( "GET", theUrl, false );
-        xmlHttp.send( null );
-        
-        if (xmlHttp.responseText) { 
+        $.getJSON(theUrl, function(data){
             console.log("Line written to Carto for RideID: " + rideID ); 
-            // dbDrop(); // clear localDB
-            }
-        else { console.log("Line in Carto failed for rideID: " + rideID ); }
-        // console.log(theUrl);
-        // console.log("cartoDB line response: " + xmlHttp.responseText);
-        
-        // return xmlHttp.responseText;        
+            console.log(data);
+        });
+
     }
 }
 
