@@ -6,6 +6,7 @@
     <title>Digital Mass - Map</title>
       <link rel="stylesheet" href="master.css" type="text/css" media="screen" title="no title">
   
+      <script type="text/javascript" charset="utf-8" src="js/jquery-1.8.2.min.js"></script>
       <script type="text/javascript" charset="utf-8" src="cordova-1.5.0.js"></script>
       <script type="text/javascript" charset="utf-8" src="main.js"></script>
     <!--
@@ -14,7 +15,7 @@
 
 
 </head>
-<body onload="initmap();" id="stage" class="theme">
+<body id="stage" class="theme">
     <div id="menu" style="display:block;" >
         <ul>
             <li><a href="index.html">Back</a> <a href="#" onclick="mapall();">All Riders</a> <a href="#" onclick="initmap();">Your Rides</a></li>        
@@ -25,5 +26,8 @@
         <iframe id="mapframe" src=''>Loading...</iframe>
     </div>
     
+    <script>
+        $(window).load(function () { initmap(); });
+    </script>
   </body>
 </html>

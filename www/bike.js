@@ -3,7 +3,7 @@
  */
 
 var write_to_carto = true;
-var write_local_db = false;
+var write_local_db = true;
 var dropadd_local_db = false; // clear local DB
 var reset_rideNum = false; // clear localStorage
 var reset_distLifetime = false; // clear localStorage
@@ -14,7 +14,7 @@ var use_dummy_data = true; // true for off-phone browser dev
  * Setup Variables & Local DB
  */
 
-// setup  CartoDB
+// setup CartoDB
 var urlBase = "https://ideapublic.cartodb.com/api/v1/sql?api_key=";
 var cartoKey = ""; 
 
@@ -32,22 +32,32 @@ var timer_is_on=0;
 
 
 
+
 function initBike() {
     // check for username
     if ( !localStorage.getItem('username') ) { 
         //window.location.href = "settings.html"
-        document.getElementById('settings').style.display = "block";
-        document.getElementById('stats').style.display = "none";
-        document.getElementById('maplink').style.display = "none";
+        console.log('New User?');
+        newuser();
     }
     else {
         username = localStorage.getItem('username');
         console.log("username: " + username); 
     }
-    
     lifetimeDistance();
-     
 }
+
+
+function newuser(){
+    $('#stats').hide();
+    $('#maplink').hide();
+    $('body').prepend('<div id="settings"><form><p>Choose a public username.</p><input id="username" placeholder="username" /><input type="submit" value="Submit" /><br /></form></div>');
+    $('#settings input:submit').click( function(){
+        saveSettings(); 
+        return false;
+    });
+}
+
 
 // set up local storage
 if (reset_rideNum) { 
@@ -74,15 +84,16 @@ else { init_db(); }
  */
 
 // start ride: triggered by user
+
 function iotbike() {
 
+    console.log('start');
     if (timer_is_on == 0) {
         timer_is_on=1;
         toggleUI();
 
         rideID = rideID + 1;
-        document.getElementById('distance').innerHTML = "0.00 km";
-        
+        $('#distance').html("0.00 km");
 
         startTime = new Date();
         startTimer();
@@ -102,8 +113,8 @@ function iotbike() {
         vibrate();
 
     }
+}; 
 
-}
 
 // stop ride: triggered by user
 function iotOff() {
@@ -132,11 +143,6 @@ function iotOff() {
 }
 
 
-var vibrate = function() {
-   // navigator.notification.vibrate(1);
-};
-
-
 
 /******************************* 
  * Interface
@@ -144,45 +150,36 @@ var vibrate = function() {
 
 
 function toggleUI() {
-    var startbutton = document.getElementById('start');
-    var stopbutton = document.getElementById('stop');
-    var data = document.getElementById('ridedata');
-    var hardware = document.getElementById('hardware');
-    var clock = document.getElementById('time');
-    var maplink = document.getElementById('maplink');
-
-    if ( startbutton.style.display == "none" ) { 
-        startbutton.style.display = "block";
-        stopbutton.style.display = "none";  
-        maplink.style.display = "block";
-        clock.style.color = "#aaa";
+    if ( timer_is_on == 1 ) { 
+        $('#start').hide();
+        $('#stop').show();
+        $('#maplink').hide();
+        $('#time').css('color','#fff');
     }
     else {
-        startbutton.style.display = "none";
-        stopbutton.style.display = "block";        
-        maplink.style.display = "none";
-        clock.style.color = "#fff";
-    }
-    
+        $('#start').show();
+        $('#stop').hide();
+        $('#maplink').show();
+        $('#time').css('color','#aaa');
+    }    
 }
 
 // data to UI
 // could be run on CartoDB xmlHttp.responseText
 function feedback() {    
-    document.getElementById('ride-number').innerHTML = "Ride #" + rideID;
-    document.getElementById('opendata').innerHTML = "Data transmission log. User: " + userID + ". Ride: " + rideID + ". ";
-    
+    $('#ride-number').html("Ride #" + rideID);
+    $('#opendata').html("Data transmission log. User: " + userID + ". Ride: " + rideID + ". ");
 }
 
 function initmap() {
+    console.log('init map');
     username = localStorage.getItem('username');
-    
     var mapurl = "https://ideapublic.cartodb.com/tables/rides/embed_map?sql=SELECT%20*%20FROM%20rides%20where%20username%3D'"+username +"'";    
-    document.getElementById('mapframe').src = mapurl;
+    $('#mapframe').attr('src',mapurl);
 }
 function mapall() {
     var mapurl = "https://ideapublic.cartodb.com/tables/rides/embed_map";    
-    document.getElementById('mapframe').src = mapurl;
+    $('#mapframe').attr('src',mapurl);
 }
 
 
@@ -280,9 +277,9 @@ function bikeLocation() {
 
 // reveal data to the user
 function openthedata(counter,lati,longi) {
-    document.getElementById('opendata').innerHTML += "Point: " + counter + ". ";
-    document.getElementById('opendata').innerHTML += "Lat: " + lati + ". ";
-    document.getElementById('opendata').innerHTML += "Long: " + longi + ". ";
+    $('#opendata').append( "Point: " + counter + ". ");
+    $('#opendata').append("Lat: " + lati + ". ");
+    $('#opendata').append("Long: " + longi + ". ");
 }
 
 
@@ -300,7 +297,7 @@ function check_net_connection() {
     states[Connection.NONE]     = 'No connection';
 
     var net_connect = states[networkState];
-    document.getElementById('connection').innerHTML = net_connect; 
+    $('#connection').html(net_connect); 
 }
 
 
@@ -317,6 +314,9 @@ function cartodbTrace(rideID,count,lati,longi) {
         var gpsTimestamp ="now()";
         var sqlInsert ="&q=INSERT INTO gps_traces(gps_timestamp,ride_id,trace_id,username,the_geom) VALUES("+ gpsTimestamp +","+ rideID +","+ count +",'"+ username +"',ST_SetSrid(st_makepoint("+ longi +","+ lati +"),4326))";
         var theUrl = urlBase + cartoKey + sqlInsert;
+
+        console.log("rideID:" + rideID + ", trace:" + counter); 
+        console.log(sqlInsert); 
 
         var xmlHttp = null;
         xmlHttp = new XMLHttpRequest();
@@ -440,7 +440,7 @@ function rideCheck() {
          localStorage.setItem('distLifetime',0);
      }
      distLifetime = Number(localStorage.distLifetime); // convert, stored as string.
-     document.getElementById('dist-Lifetime').innerHTML = displayDistance(distLifetime);    
+     $('#dist-Lifetime').html(displayDistance(distLifetime)); 
  }
 
 
@@ -465,7 +465,7 @@ function rideDistance(lat1,lon1,lat2,lon2) {
 	distance = Math.round(dist * 1000); // km to meters
 	distRide +=  distance; 
 	
-	document.getElementById('distance').innerHTML = displayDistance(distRide);
+	$('#distance').html(displayDistance(distRide));
             
 }
 
@@ -508,7 +508,6 @@ function displayDistance(distRide){
  * Elapsed Timer
  */
 
-
 function startTimer() {
     var today=new Date();
     var elapsed = (today - startTime)/1000;
@@ -523,7 +522,7 @@ function startTimer() {
     secs=checkTimer(secs);
 
     if (timer_is_on==1) {
-        document.getElementById('time').innerHTML=hours+":"+minutes+":"+secs;
+        $('#time').html(hours+":"+minutes+":"+secs);
         t=setTimeout('startTimer()',500);
     }
 }
@@ -542,9 +541,9 @@ function checkTimer(i) {
  */
 
 function saveSettings() {
-    localStorage.username = document.getElementById('username').value;
+    localStorage.username = $('#username').val();
     console.log("saved username: " + localStorage.username);
-    //localStorage.email = document.getElementById('email').value;
+    //localStorage.email = $('#email').val();
     //console.log("saved email: " + localStorage.email);
     
     window.location.href = "index.html"
@@ -555,9 +554,8 @@ function loadSettings() {
 	if (!localStorage.username) {
 	    localStorage.username = "";
 	}
-    document.getElementById('username').value = localStorage.username;
-    document.getElementById('settings').style.display = "block";
-    
+    $('#username').val( localStorage.username );
+    $('#settings').show();    
 }
 
 function deleteSettings() {

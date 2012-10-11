@@ -40,9 +40,6 @@ p {
   border-radius: 4px;
  
 }
-#settings { /* username form */
-    display:none;
-    }
 
 #opendata {
     position:absolute;

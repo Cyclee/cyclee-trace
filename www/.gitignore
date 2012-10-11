@@ -1,0 +1,8 @@
+# textmate project
+*.tmproj
+
+# OSX
+.DS_Store
+
+# Thumbnails
+._*

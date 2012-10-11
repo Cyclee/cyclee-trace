@@ -6,15 +6,15 @@
     <title>Digital Mass - Settings</title>
       <link rel="stylesheet" href="master.css" type="text/css" media="screen" title="no title">
   
+      <script type="text/javascript" charset="utf-8" src="js/jquery-1.8.2.min.js"></script>
       <script type="text/javascript" charset="utf-8" src="cordova-1.5.0.js"></script>
       <script type="text/javascript" charset="utf-8" src="main.js"></script>
     <!--
      disable main.js and cordova-x.x.x.js for off-phone dev    -->  
       <script type="text/javascript" charset="utf-8" src="bike.js"></script>
 
-
 </head>
-<body onload="loadSettings();" id="stage" class="theme">
+<body id="stage" class="theme">
     <div id="menu" style="display:block;" >
         <ul>
             <li id=""><a href="index.html">Back</a></li>        
@@ -41,6 +41,10 @@
         <dt>Height:</dt><dd id="height">&nbsp;</dd>
         <dt>Color Depth:</dt><dd id="colorDepth"></dd>
     </dl>
+    
+    <script>
+        $(window).load(function () { loadSettings(); });
+    </script>
     
   </body>
 </html>
