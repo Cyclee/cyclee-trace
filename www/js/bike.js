@@ -15,8 +15,8 @@ var use_dummy_data = true; // true for off-phone browser dev
  */
 
 // setup CartoDB
-var urlBase = "https://ideapublic.cartodb.com/api/v1/sql?api_key=";
-var cartoKey = "d1003f790f91855f9a72363ac887e14010974332"; 
+var urlBase = "https://ideapublic.cartodb.com/api/v2/sql?";
+var cartoKey = "api_key=XXXXXXXXXX"; 
 
 // setup ride vars
 var gpsInterval = 5000; // milliseconds
@@ -312,23 +312,19 @@ function cartodbTrace(rideID,count,lati,longi) {
     if (write_to_carto) { // if write_to_carto AND timer_is_on ??
 
         var gpsTimestamp ="now()";
+        // var sqlInsert ="&q=SELECT count(*) FROM gps_traces";
         var sqlInsert ="&q=INSERT INTO gps_traces(gps_timestamp,ride_id,trace_id,username,the_geom) VALUES("+ gpsTimestamp +","+ rideID +","+ count +",'"+ username +"',ST_SetSrid(st_makepoint("+ longi +","+ lati +"),4326))";
         var theUrl = urlBase + cartoKey + sqlInsert;
 
-        console.log("rideID:" + rideID + ", trace:" + counter); 
-        console.log(sqlInsert); 
+        // console.log("rideID:" + rideID + ", trace:" + counter); 
 
-        var xmlHttp = null;
-        xmlHttp = new XMLHttpRequest();
-        xmlHttp.open( "GET", theUrl, false );
-        xmlHttp.send( null );
-        if (xmlHttp.responseText) { 
-            // console.log("rideID:" + rideID + ", trace:" + counter); 
-            }
-        else { console.log("Trace to Carto failed: " + counter); }
-        // console.log("cartoDB response: " + xmlHttp.responseText);
-        // return xmlHttp.responseText;
-
+        $.getJSON(theUrl, function(data){
+            // console.log('getjson ok');
+            // console.log(data);
+            $.each(data.rows, function(key, val) {
+               // do something!
+            });
+        });
     }
 }
 
